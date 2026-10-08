@@ -15,15 +15,12 @@ app.get("/", (req, res) => {
 const count = io.engine.clientsCount;
 io.on("connection", async (socket) => {
   io.socketsJoin("room1");
-  socket.data.username = "rod";
+  socket.on('added username', (username)=> 
+    socket.data.username = username
+  )
   socket.on("chat message", (message) => {
     io.emit("chat message", message);
   });
-//   console.log(socket.broadcast);
-  // socket.on('connect', () => {
-  //     console.log("connected")
-  //     console.log('a user connect',socket.id, count);
-  // })
   socket.on("disconnect", () => {
     io.emit("user online", socket.data.username);
   });
