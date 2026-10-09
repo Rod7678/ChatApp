@@ -15,8 +15,10 @@ app.get("/", (req, res) => {
 const count = io.engine.clientsCount;
 io.on("connection", async (socket) => {
   io.socketsJoin("room1");
-  socket.on('added username', (username)=> 
-    socket.data.username = username
+  socket.on('user name', (username)=>{
+    socket.data.username = username;
+    console.log("user name", username);
+   }
   )
   socket.on("chat message", (message) => {
     io.emit("chat message", message);

@@ -10,6 +10,8 @@
     <h1>Chat App</h1>
 
     <ul id="messages"></ul>
+    <input type="text" placeholder="enter your name" id="username"/>
+    <button id="userBtn">Add userName</button>
     <form id="form" action="">
       <input
         type="text"
@@ -25,6 +27,8 @@
       const messages = document.getElementById("messages");
       const form = document.getElementById("form");
       const input = document.getElementById("input");
+      const userName = document.getElementById("username");
+      const addUserBtn = document.getElementById("userBtn");
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -33,6 +37,13 @@
         if (message) {
           socket.emit("chat message", message);
           input.value = " ";
+        }
+      });
+
+      addUserBtn.addEventListener('click', ()=>{
+        if(userName) {
+          socket.emit("user name", userName.value);
+          userName.value = socket.data.userName;
         }
       });
 
