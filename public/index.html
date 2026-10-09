@@ -10,8 +10,9 @@
     <h1>Chat App</h1>
 
     <ul id="messages"></ul>
-    <input type="text" placeholder="enter your name" id="username"/>
+    <input type="text" placeholder="enter your name" id="username" />
     <button id="userBtn">Add userName</button>
+    <div id="nickname"></div>
     <form id="form" action="">
       <input
         type="text"
@@ -40,13 +41,19 @@
         }
       });
 
-      addUserBtn.addEventListener('click', ()=>{
-        if(userName) {
+      addUserBtn.addEventListener("click", () => {
+        if (userName) {
           socket.emit("user name", userName.value);
           userName.value = socket.data.userName;
         }
       });
 
+      socket.on("user name", (userName) => {
+        const nickname = document.getElementById("nickname");
+        item = document.createElement("h4");
+        item.textContent = userName;
+        nickname.appendChild(item);
+      });
       socket.on("chat message", (msg) => {
         const item = document.createElement("li");
         item.textContent = msg;
@@ -54,10 +61,10 @@
         window.scrollTo(0, document.body.scrollHeight);
       });
 
-      socket.on('user online', (msg)=>{
-        console.log(msg)
+      socket.on("user online", (msg) => {
+        console.log(msg);
         showToast(`user ${msg}`);
-      })
+      });
 
       const showToast = (message) => {
         let container = document.getElementById("toast-container");
