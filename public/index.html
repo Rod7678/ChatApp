@@ -9,10 +9,12 @@
   <body>
     <h1>Chat App</h1>
 
+    <div id="nickname"><div id="addnickname">
+        <input type="text" placeholder="enter your name" id="username" />
+        <button id="userBtn">Add userName</button>
+      </div>
+    </div>
     <ul id="messages"></ul>
-    <input type="text" placeholder="enter your name" id="username" />
-    <button id="userBtn">Add userName</button>
-    <div id="nickname"></div>
     <form id="form" action="">
       <input
         type="text"
@@ -30,6 +32,16 @@
       const input = document.getElementById("input");
       const userName = document.getElementById("username");
       const addUserBtn = document.getElementById("userBtn");
+      let nickname = document.getElementById("nickname");
+      const addnickname = document.getElementById("addnickname");
+
+      input.addEventListener('keydown', (e) => {
+        if(nickname.firstChild.nextSibling.nodeName !== "H4"){
+          alert("plese first enter nickname")
+        }else {
+          return ;
+        }
+      })
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -41,18 +53,19 @@
         }
       });
 
-      addUserBtn.addEventListener("click", () => {
+      addUserBtn.addEventListener("click", async () => {
         if (userName) {
           socket.emit("user name", userName.value);
-          userName.value = socket.data.userName;
+          userName.value = " ";
         }
       });
 
-      socket.on("user name", (userName) => {
-        const nickname = document.getElementById("nickname");
+      socket.on("user name", (username) => {
         item = document.createElement("h4");
-        item.textContent = userName;
+        item.textContent = username;
+        nickname.removeChild(addnickname)
         nickname.appendChild(item);
+
       });
       socket.on("chat message", (msg) => {
         const item = document.createElement("li");
