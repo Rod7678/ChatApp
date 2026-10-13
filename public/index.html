@@ -75,8 +75,7 @@
       });
 
       socket.on("user online", (msg) => {
-        console.log(msg);
-        showToast(`user ${msg}`);
+        showToast(`${msg} left the chat`);
       });
 
       const showToast = (message) => {
