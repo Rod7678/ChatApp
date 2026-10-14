@@ -43,6 +43,10 @@
         socket.emit('user typing', nickname.firstChild.nextSibling.value);
       })
 
+      socket.on('user typing', (username)=>{
+        console.log(username," typing")
+      })
+
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         const message = input.value;
