@@ -38,9 +38,9 @@
       input.addEventListener('keydown', (e) => {
         if(nickname.firstChild.nextSibling.nodeName !== "H4"){
           alert("plese first enter nickname")
-        }else {
-          return ;
         }
+
+        socket.emit('user typing', nickname.firstChild.nextSibling.value);
       })
 
       form.addEventListener("submit", (e) => {

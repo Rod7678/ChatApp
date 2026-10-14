@@ -20,7 +20,10 @@ io.on("connection", async (socket) => {
     io.emit('user name', username)
    }
   )
-  socket.on("chat message", (message) => {
+  socket.on("user typing", (username) => {
+    io.emit("user typing",username)
+  })
+,  socket.on("chat message", (message) => {
     io.emit("chat message", message);
   });
   socket.on("disconnect", () => {
