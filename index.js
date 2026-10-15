@@ -17,7 +17,7 @@ io.on("connection", async (socket) => {
   io.socketsJoin("room1");
   socket.on('user name', (username)=>{
     socket.data.username = username;
-    io.emit('user name', username)
+    socket.emit('user name', username)
    }
   )
   socket.on("user typing", (username) => {

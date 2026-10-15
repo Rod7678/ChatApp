@@ -39,8 +39,7 @@
         if(nickname.firstChild.nextSibling.nodeName !== "H4"){
           alert("plese first enter nickname")
         }
-
-        socket.emit('user typing', nickname.firstChild.nextSibling.value);
+        socket.emit('user typing', nickname.firstChild.nextSibling.innerText);
       })
 
       socket.on('user typing', (username)=>{
