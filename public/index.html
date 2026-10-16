@@ -8,6 +8,7 @@
   </head>
   <body>
     <h1>Chat App</h1>
+    <span id="typing"></span>
 
     <div id="nickname"><div id="addnickname">
         <input type="text" placeholder="enter your name" id="username" />
@@ -34,6 +35,7 @@
       const addUserBtn = document.getElementById("userBtn");
       let nickname = document.getElementById("nickname");
       const addnickname = document.getElementById("addnickname");
+      const typing = document.getElementById("typing");
 
       input.addEventListener('keydown', (e) => {
         if(nickname.firstChild.nextSibling.nodeName !== "H4"){
@@ -43,7 +45,8 @@
       })
 
       socket.on('user typing', (username)=>{
-        console.log(username," typing")
+        console.log(username," typing");
+        typing.innerText = `${username} Typing ....`;
       })
 
       form.addEventListener("submit", (e) => {
