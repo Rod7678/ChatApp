@@ -10,7 +10,8 @@
     <h1>Chat App</h1>
     <span id="typing"></span>
 
-    <div id="nickname"><div id="addnickname">
+    <div id="nickname">
+      <div id="addnickname">
         <input type="text" placeholder="enter your name" id="username" />
         <button id="userBtn">Add userName</button>
       </div>
@@ -37,17 +38,18 @@
       const addnickname = document.getElementById("addnickname");
       const typing = document.getElementById("typing");
 
-      input.addEventListener('keydown', (e) => {
-        if(nickname.firstChild.nextSibling.nodeName !== "H4"){
-          alert("plese first enter nickname")
+      input.addEventListener("keydown", (e) => {
+        if (nickname.firstChild.nextSibling.nextSibling.nodeName !== "H4") {
+          alert("plese first enter nickname");
         }
-        socket.emit('user typing', nickname.firstChild.nextSibling.innerText);
-      })
+        socket.emit("user typing", nickname.firstChild.nextSibling.nextSibling.innerText);
+      });
 
-      socket.on('user typing', (username)=>{
-        console.log(username," typing");
-        typing.innerText = `${username} Typing ....`;
-      })
+      socket.on("user typing", (username) => {
+        if (username !== " ") {
+          typing.innerText = `${username} Typing ....`;
+        }
+      });
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -56,12 +58,14 @@
         if (message) {
           socket.emit("chat message", message);
           input.value = " ";
+          socket.emit("user typing", " ");
         }
       });
 
       addUserBtn.addEventListener("click", async () => {
         if (userName) {
           socket.emit("user name", userName.value);
+          console.log(userName.value);
           userName.value = " ";
         }
       });
@@ -69,9 +73,8 @@
       socket.on("user name", (username) => {
         item = document.createElement("h4");
         item.textContent = username;
-        nickname.removeChild(addnickname)
+        nickname.removeChild(addnickname);
         nickname.appendChild(item);
-
       });
       socket.on("chat message", (msg) => {
         const item = document.createElement("li");

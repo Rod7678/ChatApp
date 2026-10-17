@@ -12,33 +12,31 @@ app.get("/", (req, res) => {
   return res.sendFile("/public/index.html");
 });
 
-io.use(async (socket, next) => {
-  try {
-    const user = await fetchUser(socket);
-    socket.user = user;
-  } catch (e) {
-    next(new Error("unknown user"));
-  }
-});
+// io.use(async (socket, next) => {
+//   try {
+//     const user = await fetchUser(socket);
+//     socket.user = user;
+//   } catch (e) {
+//     next(new Error("unknown user"));
+//   }
+// });
 
 io.on("connection", async (socket) => {
-  // const count = io.engine.clientsCount;
-  // const count2 = io.of("/").sockets.size;
-  // console.log("count 1", count);
-  // console.log("count 2", count2);\
-  console.log(socket.user)
+  console.log(socket.user);
   io.socketsJoin("room1");
   socket.on("user name", (username) => {
+    console.log(username);
+    
     socket.data.username = username;
     socket.emit("user name", username);
   });
 
-  (socket.on("user typing", (username) => {
-    io.emit("user typing", username);
-  }),
-    socket.on("chat message", (message) => {
-      io.emit("chat message", message);
-    }));
+  socket.on("user typing", (username) => {
+    socket.broadcast.emit("user typing", username);
+  });
+  socket.on("chat message", (message) => {
+    io.emit("chat message", message);
+  });
   socket.on("disconnect", () => {
     io.emit("user online", socket.data.username);
   });
