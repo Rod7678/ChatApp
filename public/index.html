@@ -42,30 +42,35 @@
         if (nickname.firstChild.nextSibling.nextSibling.nodeName !== "H4") {
           alert("plese first enter nickname");
         }
-        socket.emit("user typing", nickname.firstChild.nextSibling.nextSibling.innerText);
+        socket.emit(
+          "user typing",
+          nickname.firstChild.nextSibling.nextSibling.innerText,
+        );
+      });
+      input.addEventListener("keyup", () => {
+        socket.emit("user typing", null);
       });
 
       socket.on("user typing", (username) => {
-        if (username !== " ") {
+        if (username !== null) {
           typing.innerText = `${username} Typing ....`;
+        } else {
+          typing.innerText = " ";
         }
       });
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         const message = input.value;
-        console.log(message);
         if (message) {
           socket.emit("chat message", message);
           input.value = " ";
-          socket.emit("user typing", " ");
         }
       });
 
       addUserBtn.addEventListener("click", async () => {
         if (userName) {
           socket.emit("user name", userName.value);
-          console.log(userName.value);
           userName.value = " ";
         }
       });
