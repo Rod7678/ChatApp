@@ -12,13 +12,12 @@ app.get("/", (req, res) => {
   return res.sendFile("/public/index.html");
 });
 
-
 const onlineUsers = [];
 io.on("connection", async (socket) => {
   io.socketsJoin("room1");
   socket.on("user name", (username) => {
-    console.log("socket username",username);
-    
+    console.log("socket username", username);
+
     socket.data.username = username;
     onlineUsers.push(username);
     socket.emit("user name", username);
@@ -32,8 +31,8 @@ io.on("connection", async (socket) => {
   });
   socket.on("disconnect", () => {
     io.emit("user ofline", socket.data.username);
-    onlineUsers.filter((e)=> e === socket.data.username);
-    console.log(onlineUsers.filter((e)=> e === socket.data.username));
+    onlineUsers.filter((e) => e === socket.data.username);
+    console.log(onlineUsers.filter((e) => e === socket.data.username));
   });
   const sockets = await io.in("room1").fetchSockets();
   for (const socket of sockets) {
