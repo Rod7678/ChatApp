@@ -12,25 +12,18 @@ app.get("/", (req, res) => {
   return res.sendFile("/public/index.html");
 });
 
-// io.use(async (socket, next) => {
-//   try {
-//     const user = await fetchUser(socket);
-//     socket.user = user;
-//   } catch (e) {
-//     next(new Error("unknown user"));
-//   }
-// });
 
+const onlineUsers = [];
 io.on("connection", async (socket) => {
-  console.log(socket.user);
   io.socketsJoin("room1");
   socket.on("user name", (username) => {
-    console.log(username);
+    console.log("socket username",username);
     
     socket.data.username = username;
+    onlineUsers.push(username);
     socket.emit("user name", username);
+    console.log("data array of online users", onlineUsers);
   });
-
   socket.on("user typing", (username) => {
     socket.broadcast.emit("user typing", username);
   });
@@ -38,18 +31,15 @@ io.on("connection", async (socket) => {
     io.emit("chat message", message);
   });
   socket.on("disconnect", () => {
-    io.emit("user online", socket.data.username);
+    io.emit("user ofline", socket.data.username);
+    onlineUsers.filter((e)=> e === socket.data.username);
+    console.log(onlineUsers.filter((e)=> e === socket.data.username));
   });
   const sockets = await io.in("room1").fetchSockets();
   for (const socket of sockets) {
     console.log("socket id", socket.id);
-    // console.log(socket.handshake);
     console.log("socket rooms", socket.rooms);
     console.log("socket data", socket.data);
-    // socket.emit(/* ... */);
-    // socket.join(/* ... */);
-    // socket.leave(/* ... */);
-    // socket.disconnect(/* ... */);
   }
 });
 

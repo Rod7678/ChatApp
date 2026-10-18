@@ -88,7 +88,7 @@
         window.scrollTo(0, document.body.scrollHeight);
       });
 
-      socket.on("user online", (msg) => {
+      socket.on("user ofline", (msg) => {
         showToast(`${msg} left the chat`);
       });
 
