@@ -95,3 +95,12 @@ body {
 #messages > li:nth-child(odd) {
   background: #efefef;
 }
+
+
+#onlineUsers{
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 150px;
+  width: 150px;
+}

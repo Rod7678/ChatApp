@@ -15,6 +15,9 @@
         <button id="userBtn">Add userName</button>
       </div>
     </div>
+    <div id="onlineUsers">
+      <ul id="listOfUsers"></ul>
+    </div>
     <ul id="messages"></ul>
     <span id="typing"></span>
     <form id="form" action="">
@@ -37,6 +40,7 @@
       let nickname = document.getElementById("nickname");
       const addnickname = document.getElementById("addnickname");
       const typing = document.getElementById("typing");
+      const listOfUsers = document.getElementById("listOfUsers");
 
       input.addEventListener("keydown", (e) => {
         if (nickname.firstChild.nextSibling.nextSibling.nodeName !== "H4") {
@@ -56,6 +60,14 @@
           typing.innerText = `${username} Typing ....`;
         } else {
           typing.innerText = " ";
+        }
+      });
+
+      socket.on("online users", (users) => {
+        const item = document.createElement("li");
+        for (let i = 0; i < users.length; i++) {
+          item.textContent = users[i];
+          listOfUsers.appendChild(item);
         }
       });
 

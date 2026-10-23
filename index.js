@@ -17,11 +17,10 @@ io.on("connection", async (socket) => {
   io.socketsJoin("room1");
   socket.on("user name", (username) => {
     console.log("socket username", username);
-
     socket.data.username = username;
     onlineUsers.push(username);
     socket.emit("user name", username);
-    console.log("data array of online users", onlineUsers);
+    socket.broadcast.emit("online users", onlineUsers);
   });
   socket.on("user typing", (username) => {
     socket.broadcast.emit("user typing", username);
@@ -31,8 +30,11 @@ io.on("connection", async (socket) => {
   });
   socket.on("disconnect", () => {
     io.emit("user ofline", socket.data.username);
-    onlineUsers.filter((e) => e === socket.data.username);
-    console.log(onlineUsers.filter((e) => e === socket.data.username));
+    onlineUsers.filter((e) => e === !socket.data.username);
+    console.log(
+      "disconnected",
+      onlineUsers.filter((e) => e === !socket.data.username),
+    );
   });
   const sockets = await io.in("room1").fetchSockets();
   for (const socket of sockets) {
