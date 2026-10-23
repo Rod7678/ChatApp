@@ -16,6 +16,7 @@
       </div>
     </div>
     <div id="onlineUsers">
+      <h5>Online</h5>
       <ul id="listOfUsers"></ul>
     </div>
     <ul id="messages"></ul>
@@ -65,6 +66,7 @@
 
       socket.on("online users", (users) => {
         const item = document.createElement("li");
+        item.id = 'onlineUser-list';
         for (let i = 0; i < users.length; i++) {
           item.textContent = users[i];
           listOfUsers.appendChild(item);

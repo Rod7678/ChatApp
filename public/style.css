@@ -1,4 +1,4 @@
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -96,11 +96,13 @@ body {
   background: #efefef;
 }
 
-
-#onlineUsers{
+#onlineUsers {
   position: absolute;
   right: 0;
   top: 0;
   height: 150px;
   width: 150px;
+}
+#onlineUser-list {
+  list-style: none;
 }
